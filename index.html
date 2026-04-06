@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Floating Name | Ethereal Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* prevents accidental text selection while floating */
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0f2a 0%, #0f1a3a 50%, #0a0c24 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', 'Segoe UI', 'Montserrat', system-ui, -apple-system, 'Inter', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            cursor: default;
+        }
+
+        /* floating particles / cosmic dust effect */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatParticle linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* main container: centers the floating name */
+        .name-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 800px;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        /* THE FLOATING NAME – magical, dynamic, and alive */
+        .floating-name {
+            font-size: clamp(3rem, 12vw, 7rem);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #F9F3C6, #C1FFD7);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 12px rgba(255,215,150,0.5), 0 0 25px rgba(100,200,255,0.3);
+            animation: gradientFlow 8s ease infinite, floatMotion 5s ease-in-out infinite, subtleGlow 3s alternate infinite;
+            transform-style: preserve-3d;
+            transition: all 0.2s ease;
+            cursor: default;
+            white-space: nowrap;
+            backdrop-filter: blur(2px);
+            padding: 0.2em 0.4em;
+            border-radius: 60px;
+        }
+
+        /* smooth gradient shifting */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* main floating motion: vertical + slight horizontal drift + rotation */
+        @keyframes floatMotion {
+            0% {
+                transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg);
+            }
+            25% {
+                transform: translateY(-18px) translateX(10px) rotateX(2deg) rotateY(4deg);
+            }
+            50% {
+                transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg);
+            }
+            75% {
+                transform: translateY(18px) translateX(-8px) rotateX(-3deg) rotateY(-3deg);
+            }
+            100% {
+                transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg);
+            }
+        }
+
+        /* pulsing glow to enhance floating dreaminess */
+        @keyframes subtleGlow {
+            0% {
+                text-shadow: 0 0 5px rgba(255, 210, 140, 0.4), 0 0 15px rgba(80, 180, 255, 0.2);
+                filter: drop-shadow(0 0 2px rgba(255,255,200,0.3));
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 220, 100, 0.8), 0 0 35px rgba(0, 200, 255, 0.5);
+                filter: drop-shadow(0 0 8px rgba(255,245,180,0.6));
+            }
+        }
+
+        /* add a elegant glassy card effect behind name for depth (optional floating platform) */
+        .glow-ring {
+            position: absolute;
+            width: 110%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(255,255,245,0.08) 0%, rgba(120,160,255,0.02) 80%);
+            border-radius: 60%;
+            filter: blur(30px);
+            z-index: -1;
+            pointer-events: none;
+            animation: ringFloat 6s infinite alternate;
+        }
+
+        @keyframes ringFloat {
+            0% {
+                transform: translateY(10px) scale(1);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-15px) scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        /* responsive behavior: keep name centered and wrapping gracefully on mobile */
+        @media (max-width: 600px) {
+            .floating-name {
+                white-space: normal;
+                text-align: center;
+                word-break: keep-all;
+                line-height: 1.2;
+                letter-spacing: 0.05em;
+            }
+            .name-container {
+                padding: 1.2rem;
+            }
+        }
+
+        /* small sparkles that follow mouse? just for extra charm (optional) */
+        .spark {
+            position: fixed;
+            pointer-events: none;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #fff9c4, #ffd966);
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0;
+            z-index: 9999;
+            animation: sparkFade 0.8s ease-out forwards;
+        }
+
+        @keyframes sparkFade {
+            0% {
+                opacity: 0.9;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2.5);
+            }
+        }
+
+        /* a little instruction for fun (discrete) */
+        .info-hint {
+            position: fixed;
+            bottom: 18px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: rgba(220, 240, 255, 0.5);
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(6px);
+            width: fit-content;
+            margin: 0 auto;
+            padding: 6px 16px;
+            border-radius: 60px;
+            z-index: 20;
+            pointer-events: none;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        /* dynamic floating name wrapper with interactive hover */
+        .floating-name:hover {
+            animation: gradientFlow 8s ease infinite, floatMotion 0.7s ease-in-out infinite, subtleGlow 0.6s alternate infinite;
+            cursor: pointer;
+            transition: 0.1s;
+            transform: scale(1.02);
+            letter-spacing: 0.12em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background particle system (dozens of floating orbs) -->
+    <div id="particle-field"></div>
+
+    <!-- Main floating name section -->
+    <div class="name-container">
+        <div class="glow-ring"></div>
+        <div class="floating-name" id="dynamicName">YOUR NAME</div>
+    </div>
+
+    <div class="info-hint">
+        ✨ floating name • cosmic drift ✨
+    </div>
+
+    <script>
+        // -------------------------------
+        // 1. CUSTOMIZE YOUR NAME HERE
+        //    change this to your actual name!
+        // -------------------------------
+        const MY_NAME = "IMAN // <-- ★ CHANGE THIS TO YOUR NAME ★
+        // -------------------------------
+
+        // apply name to the floating element
+        const nameElement = document.getElementById('dynamicName');
+        if (nameElement) {
+            nameElement.textContent = MY_NAME;
+        }
+
+        // -------------------------------
+        // 2. CREATE BACKGROUND FLOATING PARTICLES (dreamy atmosphere)
+        // -------------------------------
+        const particleContainer = document.getElementById('particle-field');
+        const PARTICLE_COUNT = 85;    // rich but performant
+
+        function createParticles() {
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // random size between 2px and 12px
+                const size = Math.random() * 10 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // random starting position left (0-100%)
+                const leftPos = Math.random() * 100;
+                particle.style.left = `${leftPos}%`;
+                
+                // random animation duration (5s to 18s) for organic feel
+                const duration = Math.random() * 13 + 5;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // random delay to avoid all particles moving synchronously
+                const delay = Math.random() * 12;
+                particle.style.animationDelay = `${delay}s`;
+                
+                // random opacity base and color variation
+                const colorChoice = Math.random();
+                if (colorChoice < 0.33) {
+                    particle.style.background = 'rgba(255, 220, 150, 0.6)';
+                } else if (colorChoice < 0.66) {
+                    particle.style.background = 'rgba(150, 200, 255, 0.5)';
+                } else {
+                    particle.style.background = 'rgba(210, 180, 255, 0.6)';
+                }
+                
+                // blur effect for distant particles
+                if (Math.random() > 0.7) {
+                    particle.style.filter = 'blur(2px)';
+                }
+                
+                particleContainer.appendChild(particle);
+            }
+        }
+        
+        // generate particles after load
+        createParticles();
+        
+        // dynamic particle regeneration on window resize to keep full coverage
+        window.addEventListener('resize', () => {
+            // optional: clean and regenerate particles to avoid weird gaps
+            while (particleContainer.firstChild) {
+                particleContainer.removeChild(particleContainer.firstChild);
+            }
+            createParticles();
+        });
+
+        // -------------------------------
+        // 3. ADD INTERACTIVE SPARKLES ON MOUSE MOVE (enhances floating magic)
+        // -------------------------------
+        function createSparkle(x, y) {
+            const spark = document.createElement('div');
+            spark.classList.add('spark');
+            spark.style.left = `${x}px`;
+            spark.style.top = `${y}px`;
+            document.body.appendChild(spark);
+            
+            // remove after animation ends
+            setTimeout(() => {
+                if (spark && spark.remove) spark.remove();
+            }, 800);
+        }
+        
+        // throttle sparkle generation for performance (max 15 sparks per second)
+        let lastSparkTime = 0;
+        const sparkDelay = 70; // ms
+        
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastSparkTime > sparkDelay) {
+                lastSparkTime = now;
+                // create 1-2 small sparkles near cursor
+                createSparkle(e.clientX, e.clientY);
+                // occasional second tiny spark
+                if (Math.random() > 0.6) {
+                    setTimeout(() => {
+                        createSparkle(e.clientX + (Math.random() - 0.5) * 12, e.clientY + (Math.random() - 0.5) * 12);
+                    }, 15);
+                }
+            }
+        });
+        
+        // also add sparkles when clicking on the floating name for extra fun
+        nameElement.addEventListener('click', (e) => {
+            for (let i = 0; i < 12; i++) {
+                const offsetX = (Math.random() - 0.5) * 40;
+                const offsetY = (Math.random() - 0.5) * 40;
+                createSparkle(e.clientX + offsetX, e.clientY + offsetY);
+            }
+            // tiny micro interaction: fast 'pulse' on name by toggling scale temporarily
+            nameElement.style.transform = 'scale(1.08)';
+            setTimeout(() => {
+                nameElement.style.transform = '';
+            }, 180);
+        });
+        
+        // -------------------------------
+        // 4. ADD RANDOM FLOATING ORBITING RINGS AROUND NAME (optional extra floating effect)
+        // -------------------------------
+        const containerDiv = document.querySelector('.name-container');
+        
+        // create small floating orbs that revolve around the name area for more "float"
+        function createSatelliteOrbs() {
+            const orbCount = 6;
+            for (let i = 0; i < orbCount; i++) {
+                const orb = document.createElement('div');
+                orb.style.position = 'absolute';
+                orb.style.width = `${Math.random() * 12 + 4}px`;
+                orb.style.height = orb.style.width;
+                orb.style.background = `radial-gradient(circle, rgba(255,235,180,0.7), rgba(100,180,250,0.3))`;
+                orb.style.borderRadius = '50%';
+                orb.style.filter = 'blur(1.5px)';
+                orb.style.pointerEvents = 'none';
+                orb.style.zIndex = '5';
+                orb.style.opacity = '0.5';
+                
+                // random orbit radius and speed
+                const radius = Math.random() * 80 + 40;  // 40px to 120px distance
+                const speed = Math.random() * 2 + 1;     // rotation speed (deg per frame)
+                let angle = Math.random() * 360;
+                
+                orb.dataset.radius = radius;
+                orb.dataset.speed = speed;
+                orb.dataset.angle = angle;
+                orb.style.left = '50%';
+                orb.style.top = '50%';
+                orb.style.transformOrigin = 'center';
+                
+                containerDiv.appendChild(orb);
+                
+                // store animation frame reference
+                const updateOrbit = () => {
+                    if (!orb.parentNode) return;
+                    let curAngle = parseFloat(orb.dataset.angle) || 0;
+                    curAngle += parseFloat(orb.dataset.speed) * 0.5;
+                    if (curAngle > 360) curAngle -= 360;
+                    orb.dataset.angle = curAngle;
+                    const rad = curAngle * Math.PI / 180;
+                    const x = Math.cos(rad) * parseFloat(orb.dataset.radius);
+                    const y = Math.sin(rad) * parseFloat(orb.dataset.radius) * 0.7; // elliptical vertical squash
+                    orb.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+                    requestAnimationFrame(updateOrbit);
+                };
+                requestAnimationFrame(updateOrbit);
+            }
+        }
+        
+        // add small satellites but not too intrusive — ensure they float softly
+        createSatelliteOrbs();
+        
+        // add additional floating glow mist effect
+        const mist = document.createElement('div');
+        mist.style.position = 'absolute';
+        mist.style.width = '100%';
+        mist.style.height = '100%';
+        mist.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(130,180,255,0.08), transparent 70%)';
+        mist.style.pointerEvents = 'none';
+        mist.style.zIndex = '-2';
+        mist.style.borderRadius = '50%';
+        mist.style.animation = 'ringFloat 8s infinite alternate';
+        document.querySelector('.name-container')?.appendChild(mist);
+        
+        // -------------------------------
+        // 5. BETTER VISUAL: PARALLAX RESPONSIVENESS (subtle mouse follow shift for depth)
+        // -------------------------------
+        document.addEventListener('mousemove', (e) => {
+            // make name shift slightly based on mouse position (3D depth illusion)
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            const moveX = mouseX * 8;    // max 4px shift
+            const moveY = mouseY * 6;
+            if (nameElement) {
+                nameElement.style.transform = `translate(${moveX}px, ${moveY}px) rotateX(${mouseY * 2}deg) rotateY(${mouseX * 2}deg)`;
+                // reset transition so it feels smooth
+                nameElement.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1)';
+                // after mouse stops, revert to original floating animation but we need to not conflict with floatMotion.
+                // To combine, we can use a short timeout to revert to default animation style.
+                clearTimeout(window.mouseLeaveTimeout);
+                window.mouseLeaveTimeout = setTimeout(() => {
+                    if (nameElement) {
+                        nameElement.style.transform = '';
+                        nameElement.style.transition = '';
+                    }
+                }, 300);
+            }
+        });
+        
+        // Additional 'float' enhancement: subtle periodic scaling of container
+        let scaleCycle = 0;
+        setInterval(() => {
+            // slight pulse to the whole name container's glow ring
+            const ring = document.querySelector('.glow-ring');
+            if (ring) {
+                const scale = 1 + Math.sin(Date.now() / 2800) * 0.03;
+                ring.style.transform = `scale(${scale})`;
+            }
+        }, 100);
+        
+        // Update document title with floating name theme
+        document.title = `${MY_NAME} • floating cosmos`;
+        
+        // (optional) if the name is long, ensure it doesn't break design on small devices
+        function checkNameOverflow() {
+            if (window.innerWidth < 500 && MY_NAME.length > 12) {
+                nameElement.style.fontSize = '2.5rem';
+                nameElement.style.whiteSpace = 'normal';
+                nameElement.style.wordBreak = 'break-word';
+            } else {
+                nameElement.style.fontSize = '';
+                nameElement.style.whiteSpace = '';
+            }
+        }
+        window.addEventListener('resize', checkNameOverflow);
+        checkNameOverflow();
+        
+        // small console greeting (optional)
+        console.log(`✨ "${MY_NAME}" is floating gracefully in the cosmos ✨`);
+    </script>
+</body>
+</html>
